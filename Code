@@ -1,0 +1,366 @@
+print("---------------------------****Welcome to Course Management System****---------------------------")
+admin_id = "admin"
+admin_pass = "sehir123"
+
+data_std_ahmet = {"ahmet":"123","budget":"400","courses":["mathematics"]}
+data_std_ayse = {"ayse":"456","budget":"500","courses":["programming", "mathematics"]}
+data_std_all = [data_std_ahmet, data_std_ayse]
+course_data = {"physics":"      4", "mathematics":"  3", "programming": "  3"}
+
+def cost_of_courses(credit):
+    cost = 100 * credit
+    return cost
+
+users ={"ahmet":"123", "ayse":"456"}
+key = 0
+
+while key == 0:
+
+    print("Please provide login information")
+    ask_id = input("ID: ")
+    ask_pass = input("Password: ")
+    if (ask_id in users and ask_pass == users[ask_id]):
+        print("Successfully logged in!")
+        key = 2
+
+# student menu------------------------------------------------------------------------------------------------------------
+        while key == 2:
+            print("Welcome " + ask_id +"." + " What do you want to do?")
+            student_menu_list = ["1- Add courses to my courses", "2- Delete a course from my courses",
+                                 "3-Show my courses",
+                                 "4- Budget Menu",
+                                 "5- Exit"]
+
+            for i in range(len(student_menu_list)):
+                print(student_menu_list[i])
+            choise_ad = input("Your Choice: ")
+# student menu 1
+
+            if choise_ad == "1":
+                print("Course Name      Credit")
+
+                j = 0
+                for key, value in course_data.items():
+                    j += 1
+                    print(str(j), "-", key, "    ", value)
+                while True:
+                    ask_take = input("Which course do you want to take (Enter 0 to go to main menu)?")
+                    if ask_take == "0":
+                        key = 2
+
+                        break
+                    for i in range(len(data_std_all)):
+
+
+
+
+                        if ask_id == list(data_std_all[i].keys())[0]:
+
+                            if int(data_std_all[i]["budget"]) < cost_of_courses(int(list(course_data.values())[int(ask_take) - 1])):
+                                print("You don't have enough money in your account.Please deposit money, or choose a course with lesser credit.")
+                                key = 2
+
+                                continue
+
+                            elif int(data_std_all[i]["budget"]) >= cost_of_courses(int(list(course_data.values())[int(ask_take) - 1])):
+
+                                if list(course_data.keys())[int(ask_take)-1] in data_std_all[i]["courses"]:
+
+                                    print("This course is already in your profile, please choose another course:")
+
+                                else:
+                                    print(list(course_data.keys())[int(ask_take) - 1] + " has been successfully added to your courses.")
+
+                                    data_std_all[i]["courses"].append(list(course_data.keys())[int(ask_take) - 1])
+
+                                    data_std_all[i]["budget"] = (str(int(data_std_all[i]["budget"])-cost_of_courses(int(list(course_data.values())[int(ask_take) - 1]))))
+                                    key = 2
+
+                                    break
+# student menu 2
+            if choise_ad == "2":
+
+
+
+                for i in range(len(data_std_all)):
+
+                    if ask_id == list(data_std_all[i].keys())[0]:
+                        print("Course Name      Credit")
+                        t = 0
+
+                        for q in data_std_all[i]["courses"]:
+                            t += 1
+                            print(str(t),"-",q, course_data[q])
+                        ask_which = input("Which course do you want to remove?:")
+                        print("You have chosen: " + str(data_std_all[i]["courses"][int(ask_which) - 1]))
+                        print(str(cost_of_courses(int(course_data[data_std_all[i]["courses"][int(ask_which) - 1]]))) +  "$ will be returned to your account.")
+                        sure_ask = input("Are you sure that you want to remove this course? [Y/N]:")
+                        if sure_ask == "y" or sure_ask == "Y":
+                            print("Course has been deleted from your profile.")
+                            data_std_all[i]["budget"] = (str(int(data_std_all[i]["budget"]) + cost_of_courses(int(course_data[data_std_all[i]["courses"][int(ask_which) - 1]]))))
+                            del data_std_all[i]["courses"][int(ask_which) - 1]
+
+
+
+                        else:
+                            print("Process canceled.")
+# student menu 3
+            if choise_ad == "3":
+                for i in range(len(data_std_all)):
+
+                    if ask_id == list(data_std_all[i].keys())[0]:
+                        print("Course Name      Credit")
+                        t = 0
+
+                        for q in data_std_all[i]["courses"]:
+                            t += 1
+                            print(str(t),"-",q, course_data[q])
+# student menu 4
+            if choise_ad == "4":
+                for i in range(len(data_std_all)):
+
+                    if ask_id == list(data_std_all[i].keys())[0]:
+                        print("####--BUDGET MENU--####")
+                        print("Your budget is: " + str(data_std_all[i]["budget"]) + "$")
+                        print("What do you want to do?")
+                        print("1-Add Money \n2-Go to main menu")
+                        askt = input("Your choice: ")
+                        if askt == "1":
+                            ask_money = input("Amount of money: ")
+                            data_std_all[i]["budget"] = (str(int(data_std_all[i]["budget"]) + int(ask_money)))
+                            print("Your budget has been updated.")
+                        if askt == "2":
+                            print("Please wait...")
+
+
+
+
+
+
+
+
+
+# student menu exit 5
+            if choise_ad == "5":
+                key = 0
+                break
+
+
+
+
+
+
+    elif ask_id == admin_id and ask_pass == admin_pass:
+        print("Successfully logged in! (Admin)")
+        key = 1
+
+
+# ADMIN MENU------------------------------------------------------------------------------------------------------
+        while key == 1:
+            print("Welcome Admin! What do you want to do?")
+            admin_menu_list = ["1- List courses", "2- Create a course", "3-Delete a course",
+                               "4- Show students registered to a course",
+                               "5- Users Budget Menu", "6- List Users", "7- Create Users", "8-Delete Users", "9-Exit"]
+
+            for i in range(len(admin_menu_list)):
+                print(admin_menu_list[i])
+            choise_ad = input("Your Choice: ")
+# admin menu 1
+            if choise_ad == "1":
+                print("***Offered Courses***")
+                print("Course Name      Credit")
+                j = 0
+                for key,value in course_data.items():
+                     j += 1
+                     print(str(j),"-", key, "    ", value)
+                back = input("Press enter to go back to menu.")
+                key = 1
+                continue
+# admin menu 2
+            if choise_ad == "2":
+                create_course = input("What is the name of the course that you want to add?:")
+                create_course_credit = input("How many credits this course has?:")
+                print(create_course + " will be added with " + create_course_credit +" credits.")
+                ask_sure = input("Are you sure? [Y/N]:")
+                q = len(course_data) + 1
+                if ask_sure == "y" or ask_sure == "Y":
+                    print(create_course + " has been added to courses with " + create_course_credit + " credits.")
+                    course_data[create_course] = "  " + create_course_credit
+
+
+
+
+
+                    continue
+                else:
+                    print("Adding canceled.")
+                    continue
+# admin menu 3
+            if choise_ad == "3":
+
+                print("***Offered Courses***")
+                print("Course Name      Credit")
+
+                j = 0
+                for key, value in course_data.items():
+                    j += 1
+                    print(str(j), "-", key, "    ", value)
+
+
+                delete_course = input("Which course do you want to delete?:")
+                if int(delete_course) <= len(course_data):
+                    print(list(course_data.keys())[int(delete_course)-1] + " has been deleted and money has been transferred back to student accounts.")
+                    #para geri
+
+                    for i in range(len(data_std_all)):
+                        if list(course_data.keys())[int(delete_course)-1] in data_std_all[i]["courses"]:
+                            data_std_all[i]["budget"] = str(int(data_std_all[i]["budget"]) + cost_of_courses(int(list(course_data.values())[int(delete_course)-1])))#cost of course
+                            #kullanıcıdan silme
+                    del course_data[list(course_data.keys())[int(delete_course)-1]] # ders silindikten sonra student show courses hata
+                    key = 1
+                    ee = input("Press enter to go back to menu.")
+                    continue
+                else:
+                    print("Please type a valid course number.")
+
+                    key = 1
+                    continue
+# admin menu 4
+            if choise_ad == "4":
+                while True:
+                    ask_who = input("Which course do you want to show?:")
+                    if ask_who in course_data.keys():
+                        print("Course name: " + ask_who)
+                        print("Students taking " + ask_who)
+                        for i in range(len(data_std_all)):
+                            if ask_who in data_std_all[i]["courses"]:
+
+                                print(list(data_std_all[i].keys())[0])
+
+
+
+
+
+                        ee = input("Press enter to go back to menu.")
+                        break
+                    else:
+
+                        print("This course does not exist, please provide a valid input.")
+                        continue
+# admin menu 5
+            if choise_ad == "5":
+                print("User         Money")
+                x = 0
+                for i in range(len(data_std_all)):
+                    x += 1
+                    print(str(x)+"-" + list(data_std_all[i].keys())[0] + "         " +data_std_all[i]["budget"])
+
+
+                print("---What do you want do?---")
+                print("1-Add money to user")
+                print("2-Subtract money from user")
+                print("3-Back to main menu")
+                y = 0
+                ask_do = input("Your choice:")
+                if ask_do == "1":
+                    print("Which user do you want add money to their account?")
+                    for i in range(len(data_std_all)):
+                        y += 1
+                        print(str(y)+"-" + list(data_std_all[i].keys())[0])
+                    ask_whom_give = input("Your choice:")
+                    how_much = input("How much money do you want to add?")
+                    print(how_much + " will be added to " + list(data_std_all[int(ask_whom_give)-1].keys())[0])
+                    ask_sure2 = input("Are you sure? [Y/N]:")
+                    if ask_sure2 == "y" or ask_sure2 == "Y":
+                        data_std_all[(int(ask_whom_give)-1)]["budget"] = str(int(data_std_all[(int(ask_whom_give)-1)]["budget"]) + int(how_much))
+                        print("Process completed.")
+                    else:
+                        print("process canceled.")
+                if ask_do == "2":
+                    print("Which user do you want substract money from their account?")
+                    for i in range(len(data_std_all)):
+                        y += 1
+                        print(str(y)+"-" + list(data_std_all[i].keys())[0])
+                    ask_whom_sub = input("Your choice:")
+                    how_much2 = input("How much money do you want to subtract?")
+                    print(how_much2 + " will be subtracted to " + list(data_std_all[int(ask_whom_sub) - 1].keys())[0])
+                    ask_sure3 = input("Are you sure? [Y/N]:")
+                    if ask_sure3 == "y" or ask_sure3 == "Y":
+                        data_std_all[(int(ask_whom_sub) - 1)]["budget"] = str(int(data_std_all[(int(ask_whom_sub) - 1)]["budget"]) - int(how_much2))
+                        print("Process completed.")
+                    else:
+                        print("process canceled.")
+# admin menu 6
+            if choise_ad == "6":
+                r = 0
+                print("Current users:")
+                for i in range(len(data_std_all)):
+                    r += 1
+                    print(str(r) + "-" + list(data_std_all[i].keys())[0])
+                we = input("Press enter to go back to menu")
+
+# admin menu 7
+            if choise_ad == "7":
+                while True:
+                    ask_create_name = input("What is the name of user that you want to create?:")
+                    ask_create_password = input("What is the password for account?")
+                    ask_create_money = input("How much money do you want user to have?:")
+                    if ask_create_name in users:
+                        print("Username using by another user. Try again with different username.")
+                        continue
+                    else:
+                        users[ask_create_name] = ask_create_password
+                        data_std_new = {ask_create_name:ask_create_password, "budget":ask_create_money , "courses":[]}
+                        data_std_all.append(data_std_new)
+                        print("The new user has been added successfully!")
+                        ce = input("Press enter to go back to menu")
+                        break
+
+# admin menu 8
+            if choise_ad == "8":
+                r = 0
+                print("Current users:")
+                for i in range(len(data_std_all)):
+                    r += 1
+                    print(str(r) + "-" + list(data_std_all[i].keys())[0])
+                ask_delete_who = input("What is the name of user that you want to delete?")
+                if list(users.keys())[int(ask_delete_who)-1] in users:
+                    print(str(list(data_std_all[int(ask_delete_who)-1].keys())[0]) + " will be deleted.")
+                    sure4 = input("Are you sure ? [Y/N]:")
+                    if sure4 == "y" or sure4 == "Y":
+                        del data_std_all[int(ask_delete_who)-1]
+                        del users[list(users.keys())[int(ask_delete_who)-1]]
+                        print("Process completed.")
+                        oe = input("Press enter to go back to menu")
+
+                    else:
+                        print("Process canceled.")
+                        te = input("Press enter to go back to menu")
+
+                else:
+                    print("User cannot be found.")
+
+
+
+
+
+
+
+# admin menu 9 (exit)
+            if choise_ad == "9":
+                key = 0
+                break
+
+
+
+
+
+
+
+
+
+
+# Invalid password
+    else:
+        print("Invalid id or password please try again")
+        continue
